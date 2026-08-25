@@ -221,15 +221,21 @@
   }
   .about-text p { color: var(--text-muted); margin-bottom: 14px; font-size: 15px; }
   .about-text strong { color: var(--text); font-weight: 600; }
-  .fact-list { display: flex; flex-direction: column; gap: 14px; }
+  .fact-list { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; align-content: start; }
   .fact {
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: 8px;
     padding: 14px 16px;
+    transition: border-color 0.25s, transform 0.25s;
   }
+  .fact:hover { border-color: var(--teal-dim); transform: translateY(-2px); }
   .fact .k { font-family: var(--mono); font-size: 11px; color: var(--teal); text-transform: uppercase; letter-spacing: 0.06em; }
-  .fact .v { font-size: 14px; margin-top: 4px; color: var(--text); }
+  .fact .v { font-size: 13.5px; margin-top: 4px; color: var(--text); line-height: 1.4; }
+
+  @media (max-width: 560px) {
+    .fact-list { grid-template-columns: 1fr; }
+  }
 
   /* ---------- SKILLS ---------- */
   .schema {
