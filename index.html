@@ -346,22 +346,37 @@
     flex-wrap: wrap;
   }
 
+  .project-split {
+    display: grid;
+    grid-template-columns: 1.15fr 0.85fr;
+    gap: 28px;
+    align-items: start;
+  }
+  .project-visual { perspective: 1400px; }
   .shot-frame {
     border: 1px solid var(--border);
     border-radius: 8px;
     overflow: hidden;
-    margin-bottom: 18px;
     background: var(--surface-2);
     transform-origin: center bottom;
+    cursor: pointer;
   }
+  .shot-hint {
+    text-align: center;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-top: 8px;
+  }
+  .shot-hint::before { content: "⤢ "; color: var(--teal); }
 
   @media (hover: hover) and (pointer: fine) {
     .shot-frame {
       transform: rotateX(7deg) rotateY(-9deg) scale(0.96);
       box-shadow: 0 30px 55px rgba(0,0,0,0.5);
-      transition: transform 0.55s cubic-bezier(0.2,0.8,0.2,1), box-shadow 0.55s ease;
+      transition: transform 0.5s cubic-bezier(0.2,0.8,0.2,1), box-shadow 0.5s ease;
     }
-    .project:hover .shot-frame {
+    .shot-frame:hover {
       transform: rotateX(0deg) rotateY(0deg) scale(1);
       box-shadow: 0 14px 34px rgba(0,0,0,0.35), 0 0 44px rgba(79,209,197,0.14);
     }
@@ -431,11 +446,48 @@
     .schema { grid-template-columns: 1fr; }
     .project-head { flex-direction: column; }
     .project-tags { justify-content: flex-start; }
+    .project-split { grid-template-columns: 1fr; }
   }
 
   @media (prefers-reduced-motion: reduce) {
     * { animation: none !important; transition: none !important; }
   }
+
+  .lightbox {
+    position: fixed;
+    inset: 0;
+    background: rgba(4,6,10,0.9);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    z-index: 500;
+  }
+  .lightbox.open { display: flex; }
+  .lightbox img {
+    max-width: min(1100px, 92vw);
+    max-height: 88vh;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    box-shadow: 0 30px 80px rgba(0,0,0,0.6);
+  }
+  .lightbox-close {
+    position: absolute;
+    top: 22px;
+    right: 28px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-size: 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .lightbox-close:hover { border-color: var(--teal); color: var(--teal); }
 </style>
 </head>
 <body>
@@ -554,22 +606,29 @@
           <div class="stat-mini"><div class="num" data-target="12" data-suffix="+">0</div><div class="lbl">DAX measures</div></div>
           <div class="stat-mini"><div class="num" data-target="65" data-suffix="%">0</div><div class="lbl">top category share</div></div>
         </div>
-        <div class="shot-frame">
-          <div class="shot-bar">
-            <div class="shot-dot red"></div><div class="shot-dot yellow"></div><div class="shot-dot green"></div>
-            <span class="shot-title">sales_dashboard.pbix — report view</span>
+        <div class="project-split">
+          <div class="project-text">
+            <ul>
+              <li>Built an end-to-end sales analytics dashboard from a 10,700-row raw dataset, cleaning and validating data in Power Query.</li>
+              <li>Developed DAX measures including time-intelligence functions and running totals to support trend analysis.</li>
+              <li>Designed a two-page interactive report with drill-through navigation and dynamic titles for stakeholder-ready reporting.</li>
+              <li class="result">Found the top category's (Electronics) share of total sales (65%) significantly exceeded the other two categories combined — an insight that informed a targeted discount-policy recommendation.</li>
+            </ul>
+            <div class="project-links">
+              <a href="https://github.com/aintyouxsxs/BrightMart-Sales-Dashboard" target="_blank">View case study →</a>
+              <a href="https://github.com/aintyouxsxs/BrightMart-Sales-Dashboard" target="_blank">GitHub repo →</a>
+            </div>
           </div>
-          <img src="brightmart_shot.png" alt="BrightMart Retail sales dashboard showing total sales, profit, category breakdown, and regional performance">
-        </div>
-        <ul>
-          <li>Built an end-to-end sales analytics dashboard from a 10,700-row raw dataset, cleaning and validating data in Power Query.</li>
-          <li>Developed DAX measures including time-intelligence functions and running totals to support trend analysis.</li>
-          <li>Designed a two-page interactive report with drill-through navigation and dynamic titles for stakeholder-ready reporting.</li>
-          <li class="result">Found the top category's (Electronics) share of total sales (65%) significantly exceeded the other two categories combined — an insight that informed a targeted discount-policy recommendation.</li>
-        </ul>
-        <div class="project-links">
-          <a href="https://github.com/aintyouxsxs/BrightMart-Sales-Dashboard" target="_blank">View case study →</a>
-          <a href="https://github.com/aintyouxsxs/BrightMart-Sales-Dashboard" target="_blank">GitHub repo →</a>
+          <div class="project-visual">
+            <div class="shot-frame" tabindex="0" role="button" aria-label="Enlarge BrightMart dashboard screenshot">
+              <div class="shot-bar">
+                <div class="shot-dot red"></div><div class="shot-dot yellow"></div><div class="shot-dot green"></div>
+                <span class="shot-title">sales_dashboard.pbix</span>
+              </div>
+              <img src="brightmart_shot.png" alt="BrightMart Retail sales dashboard showing total sales, profit, category breakdown, and regional performance">
+            </div>
+            <div class="shot-hint">click to enlarge</div>
+          </div>
         </div>
       </div>
     </div>
@@ -592,22 +651,29 @@
           <div class="stat-mini"><div class="num" data-target="6" data-suffix="">0</div><div class="lbl">related tables</div></div>
           <div class="stat-mini"><div class="num" data-target="21.8" data-suffix="%">0</div><div class="lbl">top attrition dept.</div></div>
         </div>
-        <div class="shot-frame">
-          <div class="shot-bar">
-            <div class="shot-dot red"></div><div class="shot-dot yellow"></div><div class="shot-dot green"></div>
-            <span class="shot-title">employee_analytics_dashboard.xlsx — dashboard</span>
+        <div class="project-split">
+          <div class="project-text">
+            <ul>
+              <li>Designed a normalized SQL Server database — 6 related tables, foreign keys, self-referencing manager hierarchy — consolidating 1,200 employee records (983 active, 217 exited) across salary, performance, and exit data.</li>
+              <li>Wrote analytical SQL using JOINs, CASE WHEN, and window functions (ROW_NUMBER, RANK with PARTITION BY) to calculate attrition and pay equity by department.</li>
+              <li>Built a live Excel dashboard with PivotTables, PivotCharts, and slicers connected directly to the database.</li>
+              <li class="result">Found one department's attrition rate (21.8%) was nearly double the best-performing department's (13.5%) — directing retention efforts toward targeted investigation rather than a blanket policy.</li>
+            </ul>
+            <div class="project-links">
+              <a href="https://github.com/aintyouxsxs/Meridian-Employee-Analytics" target="_blank">View case study →</a>
+              <a href="https://github.com/aintyouxsxs/Meridian-Employee-Analytics" target="_blank">GitHub repo →</a>
+            </div>
           </div>
-          <img src="meridian_shot.png" alt="Meridian Health Group employee analytics dashboard showing headcount, attrition, salary, and days-to-fill by department">
-        </div>
-        <ul>
-          <li>Designed a normalized SQL Server database — 6 related tables, foreign keys, self-referencing manager hierarchy — consolidating 1,200 employee records (983 active, 217 exited) across salary, performance, and exit data.</li>
-          <li>Wrote analytical SQL using JOINs, CASE WHEN, and window functions (ROW_NUMBER, RANK with PARTITION BY) to calculate attrition and pay equity by department.</li>
-          <li>Built a live Excel dashboard with PivotTables, PivotCharts, and slicers connected directly to the database.</li>
-          <li class="result">Found one department's attrition rate (21.8%) was nearly double the best-performing department's (13.5%) — directing retention efforts toward targeted investigation rather than a blanket policy.</li>
-        </ul>
-        <div class="project-links">
-          <a href="https://github.com/aintyouxsxs/Meridian-Employee-Analytics" target="_blank">View case study →</a>
-          <a href="https://github.com/aintyouxsxs/Meridian-Employee-Analytics" target="_blank">GitHub repo →</a>
+          <div class="project-visual">
+            <div class="shot-frame" tabindex="0" role="button" aria-label="Enlarge Meridian dashboard screenshot">
+              <div class="shot-bar">
+                <div class="shot-dot red"></div><div class="shot-dot yellow"></div><div class="shot-dot green"></div>
+                <span class="shot-title">employee_analytics.xlsx</span>
+              </div>
+              <img src="meridian_shot.png" alt="Meridian Health Group employee analytics dashboard showing headcount, attrition, salary, and days-to-fill by department">
+            </div>
+            <div class="shot-hint">click to enlarge</div>
+          </div>
         </div>
       </div>
     </div>
@@ -629,6 +695,11 @@
     </div>
   </div>
 </section>
+
+<div class="lightbox" id="lightbox">
+  <button class="lightbox-close" id="lightboxClose" aria-label="Close enlarged image">✕</button>
+  <img id="lightboxImg" src="" alt="">
+</div>
 
 <footer>
   built by Mark Wilson Bunag — updated Aug 2026
@@ -716,6 +787,34 @@
     }, { threshold: 0.4 });
     statEls.forEach(el => statObserver.observe(el));
   }
+
+  const lightbox = document.getElementById('lightbox');
+  const lightboxImg = document.getElementById('lightboxImg');
+  const lightboxClose = document.getElementById('lightboxClose');
+
+  function openLightbox(frame) {
+    const img = frame.querySelector('img');
+    lightboxImg.src = img.src;
+    lightboxImg.alt = img.alt;
+    lightbox.classList.add('open');
+  }
+  function closeLightbox() {
+    lightbox.classList.remove('open');
+    lightboxImg.src = '';
+  }
+
+  document.querySelectorAll('.shot-frame').forEach(frame => {
+    frame.addEventListener('click', () => openLightbox(frame));
+    frame.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        openLightbox(frame);
+      }
+    });
+  });
+  lightboxClose.addEventListener('click', closeLightbox);
+  lightbox.addEventListener('click', (e) => { if (e.target === lightbox) closeLightbox(); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeLightbox(); });
 </script>
 
 </body>
