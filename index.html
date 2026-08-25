@@ -297,7 +297,7 @@
     border: 1px solid rgba(79,209,197,0.25);
     white-space: nowrap;
   }
-  .project-body { padding: 18px 24px 24px; }
+  .project-body { padding: 18px 24px 24px; perspective: 1400px; }
   .project-body ul { list-style: none; display: flex; flex-direction: column; gap: 9px; }
   .project-body li {
     font-size: 14px;
@@ -352,6 +352,19 @@
     overflow: hidden;
     margin-bottom: 18px;
     background: var(--surface-2);
+    transform-origin: center bottom;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .shot-frame {
+      transform: rotateX(7deg) rotateY(-9deg) scale(0.96);
+      box-shadow: 0 30px 55px rgba(0,0,0,0.5);
+      transition: transform 0.55s cubic-bezier(0.2,0.8,0.2,1), box-shadow 0.55s ease;
+    }
+    .project:hover .shot-frame {
+      transform: rotateX(0deg) rotateY(0deg) scale(1);
+      box-shadow: 0 14px 34px rgba(0,0,0,0.35), 0 0 44px rgba(79,209,197,0.14);
+    }
   }
   .shot-bar {
     display: flex;
