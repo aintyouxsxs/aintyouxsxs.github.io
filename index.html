@@ -43,9 +43,9 @@
   ::selection { background: var(--teal); color: var(--bg); }
 
   .wrap {
-    max-width: 900px;
+    max-width: 1140px;
     margin: 0 auto;
-    padding: 0 24px;
+    padding: 0 32px;
   }
 
   /* ---------- NAV ---------- */
@@ -77,7 +77,19 @@
     font-size: 13px;
     color: var(--text-muted);
   }
+  .navlinks a { position: relative; padding-bottom: 3px; transition: color 0.2s; }
   .navlinks a:hover { color: var(--teal); }
+  .navlinks a::after {
+    content: "";
+    position: absolute;
+    left: 0; bottom: 0;
+    width: 100%; height: 1px;
+    background: var(--teal);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.25s ease;
+  }
+  .navlinks a:hover::after { transform: scaleX(1); }
   .navlinks a::before { content: "#"; color: var(--amber); margin-right: 3px; }
 
   /* ---------- HERO / TERMINAL ---------- */
@@ -171,12 +183,19 @@
   }
   .btn:hover { transform: translateY(-2px); }
   .btn-primary { background: var(--teal); color: var(--bg); border-color: var(--teal); font-weight: 600; }
-  .btn-primary:hover { box-shadow: 0 8px 24px rgba(79,209,197,0.25); }
+  .btn-primary:hover { box-shadow: 0 8px 24px rgba(79,209,197,0.35); }
   .btn-ghost { color: var(--text); }
-  .btn-ghost:hover { border-color: var(--teal); color: var(--teal); }
+  .btn-ghost:hover { border-color: var(--teal); color: var(--teal); box-shadow: 0 6px 18px rgba(79,209,197,0.15); }
 
   /* ---------- SECTION SHARED ---------- */
   section { padding: 70px 0; border-top: 1px solid var(--border); }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.in-view { opacity: 1; transform: none; }
   .section-label {
     font-family: var(--mono);
     font-size: 13px;
@@ -251,9 +270,13 @@
     border-radius: 10px;
     margin-bottom: 24px;
     overflow: hidden;
-    transition: border-color 0.25s;
+    transition: border-color 0.25s, transform 0.25s ease, box-shadow 0.25s ease;
   }
-  .project:hover { border-color: var(--teal-dim); }
+  .project:hover {
+    border-color: var(--teal-dim);
+    transform: translateY(-4px);
+    box-shadow: 0 16px 40px rgba(0,0,0,0.35), 0 0 0 1px rgba(79,209,197,0.2);
+  }
   .project-head {
     display: flex;
     justify-content: space-between;
@@ -352,6 +375,33 @@
     display: block;
     width: 100%;
     height: auto;
+    transition: transform 0.4s ease;
+  }
+  .project:hover .shot-frame img { transform: scale(1.03); }
+
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 18px;
+  }
+  .stat-mini {
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 14px;
+    text-align: center;
+  }
+  .stat-mini .num {
+    font-family: var(--mono);
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--teal);
+  }
+  .stat-mini .lbl {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-top: 3px;
   }
 
   footer {
@@ -414,7 +464,7 @@
 </header>
 
 <section id="about">
-  <div class="wrap">
+  <div class="wrap reveal">
     <div class="section-label">about</div>
     <h2>whoami<span class="table-punct">;</span></h2>
     <div class="about-grid">
@@ -433,7 +483,7 @@
 </section>
 
 <section id="skills">
-  <div class="wrap">
+  <div class="wrap reveal">
     <div class="section-label">skills</div>
     <h2>DESCRIBE skills<span class="table-punct">;</span></h2>
     <div class="schema">
@@ -469,11 +519,11 @@
 </section>
 
 <section id="projects">
-  <div class="wrap">
+  <div class="wrap reveal">
     <div class="section-label">projects</div>
     <h2>SELECT * FROM projects<span class="table-punct">;</span></h2>
 
-    <div class="project">
+    <div class="project reveal">
       <div class="project-head">
         <div>
           <div class="project-title">BrightMart Retail — Sales Dashboard</div>
@@ -486,6 +536,11 @@
         </div>
       </div>
       <div class="project-body">
+        <div class="stats-row">
+          <div class="stat-mini"><div class="num" data-target="10700" data-suffix="">0</div><div class="lbl">rows cleaned</div></div>
+          <div class="stat-mini"><div class="num" data-target="12" data-suffix="+">0</div><div class="lbl">DAX measures</div></div>
+          <div class="stat-mini"><div class="num" data-target="65" data-suffix="%">0</div><div class="lbl">top category share</div></div>
+        </div>
         <div class="shot-frame">
           <div class="shot-bar">
             <div class="shot-dot red"></div><div class="shot-dot yellow"></div><div class="shot-dot green"></div>
@@ -506,7 +561,7 @@
       </div>
     </div>
 
-    <div class="project">
+    <div class="project reveal">
       <div class="project-head">
         <div>
           <div class="project-title">Meridian Health Group — Employee Analytics</div>
@@ -519,6 +574,11 @@
         </div>
       </div>
       <div class="project-body">
+        <div class="stats-row">
+          <div class="stat-mini"><div class="num" data-target="1200" data-suffix="">0</div><div class="lbl">employee records</div></div>
+          <div class="stat-mini"><div class="num" data-target="6" data-suffix="">0</div><div class="lbl">related tables</div></div>
+          <div class="stat-mini"><div class="num" data-target="21.8" data-suffix="%">0</div><div class="lbl">top attrition dept.</div></div>
+        </div>
         <div class="shot-frame">
           <div class="shot-bar">
             <div class="shot-dot red"></div><div class="shot-dot yellow"></div><div class="shot-dot green"></div>
@@ -543,7 +603,7 @@
 </section>
 
 <section id="contact">
-  <div class="wrap">
+  <div class="wrap reveal">
     <div class="section-label">contact</div>
     <h2>INSERT INTO inbox<span class="table-punct">;</span></h2>
     <div class="contact-box">
@@ -594,6 +654,54 @@
       }
     }
     typeChar();
+  }
+
+  const revealEls = document.querySelectorAll('.reveal');
+  const statEls = document.querySelectorAll('.stat-mini .num');
+
+  function runCountUp(el) {
+    const target = parseFloat(el.getAttribute('data-target'));
+    const suffix = el.getAttribute('data-suffix') || '';
+    const isDecimal = target % 1 !== 0;
+    const duration = 1100;
+    const start = performance.now();
+    function tick(now) {
+      const progress = Math.min((now - start) / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      const current = target * eased;
+      el.textContent = (isDecimal ? current.toFixed(1) : Math.round(current).toLocaleString()) + suffix;
+      if (progress < 1) requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  }
+
+  if (prefersReduced || !('IntersectionObserver' in window)) {
+    revealEls.forEach(el => el.classList.add('in-view'));
+    statEls.forEach(el => {
+      const target = parseFloat(el.getAttribute('data-target'));
+      const suffix = el.getAttribute('data-suffix') || '';
+      el.textContent = (target % 1 !== 0 ? target.toFixed(1) : target.toLocaleString()) + suffix;
+    });
+  } else {
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in-view');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15 });
+    revealEls.forEach(el => revealObserver.observe(el));
+
+    const statObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          runCountUp(entry.target);
+          statObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.4 });
+    statEls.forEach(el => statObserver.observe(el));
   }
 </script>
 
