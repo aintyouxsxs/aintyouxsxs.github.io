@@ -323,6 +323,37 @@
     flex-wrap: wrap;
   }
 
+  .shot-frame {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 18px;
+    background: var(--surface-2);
+  }
+  .shot-bar {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 12px;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+  }
+  .shot-dot { width: 8px; height: 8px; border-radius: 50%; }
+  .shot-dot.red { background: #E5534B; }
+  .shot-dot.yellow { background: var(--amber); }
+  .shot-dot.green { background: var(--teal); }
+  .shot-title {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-left: 6px;
+  }
+  .shot-frame img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
   footer {
     text-align: center;
     padding: 30px 0 50px;
@@ -455,6 +486,13 @@
         </div>
       </div>
       <div class="project-body">
+        <div class="shot-frame">
+          <div class="shot-bar">
+            <div class="shot-dot red"></div><div class="shot-dot yellow"></div><div class="shot-dot green"></div>
+            <span class="shot-title">sales_dashboard.pbix — report view</span>
+          </div>
+          <img src="screenshots/brightmart_shot.png" alt="BrightMart Retail sales dashboard showing total sales, profit, category breakdown, and regional performance">
+        </div>
         <ul>
           <li>Built an end-to-end sales analytics dashboard from a 10,700-row raw dataset, cleaning and validating data in Power Query.</li>
           <li>Developed DAX measures including time-intelligence functions and running totals to support trend analysis.</li>
@@ -481,6 +519,13 @@
         </div>
       </div>
       <div class="project-body">
+        <div class="shot-frame">
+          <div class="shot-bar">
+            <div class="shot-dot red"></div><div class="shot-dot yellow"></div><div class="shot-dot green"></div>
+            <span class="shot-title">employee_analytics_dashboard.xlsx — dashboard</span>
+          </div>
+          <img src="screenshots/meridian_shot.png" alt="Meridian Health Group employee analytics dashboard showing headcount, attrition, salary, and days-to-fill by department">
+        </div>
         <ul>
           <li>Designed a normalized SQL Server database — 6 related tables, foreign keys, self-referencing manager hierarchy — consolidating 1,200 employee records.</li>
           <li>Wrote analytical SQL using JOINs, CASE WHEN, and window functions (ROW_NUMBER, RANK with PARTITION BY) to calculate attrition and pay equity by department.</li>
