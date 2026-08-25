@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mark Wilson Bunag — Data Analyst Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0B0E14;
+    --surface: #121722;
+    --surface-2: #171E2C;
+    --border: #232B3A;
+    --text: #E6E8EB;
+    --text-muted: #7C8698;
+    --teal: #4FD1C5;
+    --teal-dim: #2E8B82;
+    --amber: #F2B84B;
+    --mono: 'JetBrains Mono', monospace;
+    --sans: 'Inter', sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    line-height: 1.6;
+    background-image:
+      linear-gradient(rgba(79,209,197,0.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(79,209,197,0.035) 1px, transparent 1px);
+    background-size: 48px 48px;
+    background-attachment: fixed;
+  }
+
+  a { color: inherit; text-decoration: none; }
+
+  ::selection { background: var(--teal); color: var(--bg); }
+
+  .wrap {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  /* ---------- NAV ---------- */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    backdrop-filter: blur(10px);
+    background: rgba(11,14,20,0.85);
+    border-bottom: 1px solid var(--border);
+  }
+  nav .wrap {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 24px;
+  }
+  .logo {
+    font-family: var(--mono);
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--teal);
+  }
+  .logo span { color: var(--text-muted); }
+  .navlinks {
+    display: flex;
+    gap: 28px;
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+  .navlinks a:hover { color: var(--teal); }
+  .navlinks a::before { content: "#"; color: var(--amber); margin-right: 3px; }
+
+  /* ---------- HERO / TERMINAL ---------- */
+  header.hero {
+    padding: 90px 0 70px;
+  }
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--amber);
+    letter-spacing: 0.06em;
+    margin-bottom: 18px;
+  }
+  .eyebrow::before { content: "▸ "; }
+
+  .terminal {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+  }
+  .terminal-bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 16px;
+    background: var(--surface-2);
+    border-bottom: 1px solid var(--border);
+  }
+  .dot { width: 11px; height: 11px; border-radius: 50%; }
+  .dot.red { background: #E5534B; }
+  .dot.yellow { background: #F2B84B; }
+  .dot.green { background: #4FD1C5; }
+  .terminal-title {
+    margin-left: 8px;
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+  .terminal-body {
+    padding: 28px;
+    font-family: var(--mono);
+    font-size: 15px;
+    min-height: 210px;
+  }
+  .term-line { margin-bottom: 6px; }
+  .prompt { color: var(--teal-dim); }
+  .kw { color: var(--teal); }
+  .str { color: var(--amber); }
+  .comment { color: var(--text-muted); }
+  #typed { white-space: pre-wrap; }
+  .cursor {
+    display: inline-block;
+    width: 8px;
+    height: 17px;
+    background: var(--teal);
+    vertical-align: -3px;
+    animation: blink 1s step-end infinite;
+  }
+  @keyframes blink { 50% { opacity: 0; } }
+
+  .result-row {
+    margin-top: 18px;
+    padding-top: 18px;
+    border-top: 1px dashed var(--border);
+    opacity: 0;
+    transform: translateY(6px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .result-row.show { opacity: 1; transform: translateY(0); }
+  .result-row .name { color: var(--text); font-size: 18px; font-weight: 600; }
+  .result-row .role { color: var(--text-muted); font-size: 13px; margin-top: 4px; }
+
+  .hero-actions {
+    margin-top: 28px;
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+  .btn {
+    font-family: var(--mono);
+    font-size: 13px;
+    padding: 11px 20px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    transition: border-color 0.2s, transform 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .btn:hover { transform: translateY(-2px); }
+  .btn-primary { background: var(--teal); color: var(--bg); border-color: var(--teal); font-weight: 600; }
+  .btn-primary:hover { box-shadow: 0 8px 24px rgba(79,209,197,0.25); }
+  .btn-ghost { color: var(--text); }
+  .btn-ghost:hover { border-color: var(--teal); color: var(--teal); }
+
+  /* ---------- SECTION SHARED ---------- */
+  section { padding: 70px 0; border-top: 1px solid var(--border); }
+  .section-label {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--amber);
+    margin-bottom: 10px;
+  }
+  .section-label::before { content: "-- "; color: var(--text-muted); }
+  h2 {
+    font-family: var(--mono);
+    font-size: 26px;
+    font-weight: 600;
+    margin-bottom: 28px;
+    color: var(--text);
+  }
+  h2 .table-punct { color: var(--teal); }
+
+  /* ---------- ABOUT ---------- */
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    align-items: start;
+  }
+  .about-text p { color: var(--text-muted); margin-bottom: 14px; font-size: 15px; }
+  .about-text strong { color: var(--text); font-weight: 600; }
+  .fact-list { display: flex; flex-direction: column; gap: 14px; }
+  .fact {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 16px;
+  }
+  .fact .k { font-family: var(--mono); font-size: 11px; color: var(--teal); text-transform: uppercase; letter-spacing: 0.06em; }
+  .fact .v { font-size: 14px; margin-top: 4px; color: var(--text); }
+
+  /* ---------- SKILLS ---------- */
+  .schema {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+  }
+  .schema-table {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .schema-head {
+    background: var(--surface-2);
+    padding: 12px 16px;
+    font-family: var(--mono);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--amber);
+    border-bottom: 1px solid var(--border);
+  }
+  .schema-rows { padding: 12px 16px; display: flex; flex-direction: column; gap: 9px; }
+  .schema-row {
+    font-size: 13px;
+    color: var(--text-muted);
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+  }
+  .schema-row::before { content: "•"; color: var(--teal); font-size: 10px; }
+  .schema-row b { color: var(--text); font-weight: 500; }
+
+  /* ---------- PROJECTS ---------- */
+  .project {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    margin-bottom: 24px;
+    overflow: hidden;
+    transition: border-color 0.25s;
+  }
+  .project:hover { border-color: var(--teal-dim); }
+  .project-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 20px;
+    padding: 22px 24px 0;
+  }
+  .project-title { font-family: var(--mono); font-size: 19px; font-weight: 600; color: var(--text); }
+  .project-sub { color: var(--text-muted); font-size: 13px; margin-top: 4px; }
+  .project-tags { display: flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
+  .tag {
+    font-family: var(--mono);
+    font-size: 11px;
+    padding: 4px 9px;
+    border-radius: 4px;
+    background: rgba(79,209,197,0.1);
+    color: var(--teal);
+    border: 1px solid rgba(79,209,197,0.25);
+    white-space: nowrap;
+  }
+  .project-body { padding: 18px 24px 24px; }
+  .project-body ul { list-style: none; display: flex; flex-direction: column; gap: 9px; }
+  .project-body li {
+    font-size: 14px;
+    color: var(--text-muted);
+    padding-left: 18px;
+    position: relative;
+  }
+  .project-body li::before {
+    content: "▸";
+    position: absolute;
+    left: 0;
+    color: var(--teal);
+  }
+  .project-body li.result {
+    color: var(--text);
+    background: rgba(242,184,75,0.06);
+    border-left: 2px solid var(--amber);
+    padding: 10px 12px 10px 16px;
+    border-radius: 0 4px 4px 0;
+    margin-top: 4px;
+  }
+  .project-body li.result::before { content: "→"; color: var(--amber); }
+  .project-links {
+    margin-top: 16px;
+    display: flex;
+    gap: 16px;
+    font-family: var(--mono);
+    font-size: 12px;
+  }
+  .project-links a { color: var(--teal); border-bottom: 1px solid transparent; }
+  .project-links a:hover { border-bottom-color: var(--teal); }
+
+  /* ---------- CONTACT ---------- */
+  .contact-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 36px;
+    text-align: center;
+  }
+  .contact-box p { color: var(--text-muted); margin-bottom: 22px; font-size: 15px; }
+  .contact-links {
+    display: flex;
+    justify-content: center;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+
+  footer {
+    text-align: center;
+    padding: 30px 0 50px;
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+
+  @media (max-width: 720px) {
+    .navlinks { display: none; }
+    .about-grid { grid-template-columns: 1fr; }
+    .schema { grid-template-columns: 1fr; }
+    .project-head { flex-direction: column; }
+    .project-tags { justify-content: flex-start; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { animation: none !important; transition: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <div class="logo">mwbunag<span>.dev</span></div>
+    <div class="navlinks">
+      <a href="#about">about</a>
+      <a href="#skills">skills</a>
+      <a href="#projects">projects</a>
+      <a href="#contact">contact</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="eyebrow">BSIT graduate, Cum Laude — data analyst track</div>
+    <div class="terminal">
+      <div class="terminal-bar">
+        <div class="dot red"></div><div class="dot yellow"></div><div class="dot green"></div>
+        <div class="terminal-title">career.sql</div>
+      </div>
+      <div class="terminal-body">
+        <div class="term-line"><span class="prompt">&gt;</span> <span id="typed"></span><span class="cursor" id="cursor"></span></div>
+        <div class="result-row" id="resultRow">
+          <div class="name">Mark Wilson R. Bunag</div>
+          <div class="role">Data cleaning · SQL · Power BI · Excel reporting · Bacoor, Cavite, PH</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-actions">
+      <a class="btn btn-primary" href="#projects">View projects</a>
+      <a class="btn btn-ghost" href="mailto:mwbunag@gmail.com">Get in touch</a>
+      <a class="btn btn-ghost" href="#" id="resumeLink">Download résumé</a>
+    </div>
+  </div>
+</header>
+
+<section id="about">
+  <div class="wrap">
+    <div class="section-label">about</div>
+    <h2>whoami<span class="table-punct">;</span></h2>
+    <div class="about-grid">
+      <div class="about-text">
+        <p><strong>Cum Laude graduate, BS Information Technology</strong> from Cavite State University, with hands-on experience in <strong>SQL, database design, and dashboard reporting</strong> built across independent analytics projects and a government-office internship.</p>
+        <p>I like taking messy, real-world-shaped data — duplicates, missing values, inconsistent formats — and turning it into something a decision-maker can actually act on. Comfortable working independently and picking up new tools quickly.</p>
+      </div>
+      <div class="fact-list">
+        <div class="fact"><div class="k">Honor</div><div class="v">Cum Laude, BS Information Technology — Aug 2026</div></div>
+        <div class="fact"><div class="k">Experience</div><div class="v">IT Intern, Office of the Provincial Engineer — data encoding, records management</div></div>
+        <div class="fact"><div class="k">Education</div><div class="v">BS Information Technology, Cavite State University — graduated Aug 2026</div></div>
+        <div class="fact"><div class="k">Location</div><div class="v">Bacoor, Cavite, Philippines</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="skills">
+  <div class="wrap">
+    <div class="section-label">skills</div>
+    <h2>DESCRIBE skills<span class="table-punct">;</span></h2>
+    <div class="schema">
+      <div class="schema-table">
+        <div class="schema-head">bi_and_analysis</div>
+        <div class="schema-rows">
+          <div class="schema-row"><b>Power BI</b> — data modeling, DAX</div>
+          <div class="schema-row"><b>Power Query</b> — ETL &amp; cleaning</div>
+          <div class="schema-row"><b>Excel</b> — PivotTables, PivotCharts</div>
+          <div class="schema-row">Dashboard design</div>
+        </div>
+      </div>
+      <div class="schema-table">
+        <div class="schema-head">data_management</div>
+        <div class="schema-rows">
+          <div class="schema-row"><b>SQL Server</b>, PostgreSQL, MySQL</div>
+          <div class="schema-row">JOINs, window functions</div>
+          <div class="schema-row">Relational data modeling</div>
+          <div class="schema-row">Pandas</div>
+        </div>
+      </div>
+      <div class="schema-table">
+        <div class="schema-head">tools_and_langs</div>
+        <div class="schema-rows">
+          <div class="schema-row">Python, JavaScript, PHP</div>
+          <div class="schema-row">VS Code, AWS (RDS, S3)</div>
+          <div class="schema-row">Google Workspace</div>
+          <div class="schema-row">Filipino, English</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="projects">
+  <div class="wrap">
+    <div class="section-label">projects</div>
+    <h2>SELECT * FROM projects<span class="table-punct">;</span></h2>
+
+    <div class="project">
+      <div class="project-head">
+        <div>
+          <div class="project-title">BrightMart Retail — Sales Dashboard</div>
+          <div class="project-sub">Personal project · Aug 2026</div>
+        </div>
+        <div class="project-tags">
+          <span class="tag">Power BI</span>
+          <span class="tag">DAX</span>
+          <span class="tag">Power Query</span>
+        </div>
+      </div>
+      <div class="project-body">
+        <ul>
+          <li>Built an end-to-end sales analytics dashboard from a 10,700-row raw dataset, cleaning and validating data in Power Query.</li>
+          <li>Developed DAX measures including time-intelligence functions and running totals to support trend analysis.</li>
+          <li>Designed a two-page interactive report with drill-through navigation and dynamic titles for stakeholder-ready reporting.</li>
+          <li class="result">Found the top-performing region's Electronics share (65%) significantly exceeded the company average — an insight that informed a targeted discount-policy recommendation.</li>
+        </ul>
+        <div class="project-links">
+          <a href="#">View case study →</a>
+          <a href="#">GitHub repo →</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="project">
+      <div class="project-head">
+        <div>
+          <div class="project-title">Meridian Health Group — Employee Analytics</div>
+          <div class="project-sub">Personal project · Aug 2026</div>
+        </div>
+        <div class="project-tags">
+          <span class="tag">SQL Server</span>
+          <span class="tag">T-SQL</span>
+          <span class="tag">Excel</span>
+        </div>
+      </div>
+      <div class="project-body">
+        <ul>
+          <li>Designed a normalized SQL Server database — 6 related tables, foreign keys, self-referencing manager hierarchy — consolidating 1,200 employee records.</li>
+          <li>Wrote analytical SQL using JOINs, CASE WHEN, and window functions (ROW_NUMBER, RANK with PARTITION BY) to calculate attrition and pay equity by department.</li>
+          <li>Built a live Excel dashboard with PivotTables, PivotCharts, and slicers connected directly to the database.</li>
+          <li class="result">Found one department's attrition rate (21.8%) was nearly double the best-performing department's (13.5%) — directing retention efforts toward targeted investigation rather than a blanket policy.</li>
+        </ul>
+        <div class="project-links">
+          <a href="#">View case study →</a>
+          <a href="#">GitHub repo →</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section id="contact">
+  <div class="wrap">
+    <div class="section-label">contact</div>
+    <h2>INSERT INTO inbox<span class="table-punct">;</span></h2>
+    <div class="contact-box">
+      <p>Cum Laude graduate open to entry-level data analyst, BI, or data specialist roles. Happy to walk through any project in more detail.</p>
+      <div class="contact-links">
+        <a class="btn btn-primary" href="mailto:mwbunag@gmail.com">mwbunag@gmail.com</a>
+        <a class="btn btn-ghost" href="https://linkedin.com/in/mark-wilson-bunag-33b3603a9" target="_blank">LinkedIn</a>
+        <a class="btn btn-ghost" href="tel:+639989315894">+63 998-931-5894</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  built by Mark Wilson Bunag — updated Aug 2026
+</footer>
+
+<script>
+  const text = "SELECT name, skills, mindset" + String.fromCharCode(10) + "FROM analysts" + String.fromCharCode(10) + "WHERE growth_mindset = TRUE;";
+  const typedEl = document.getElementById('typed');
+  const cursorEl = document.getElementById('cursor');
+  const resultRow = document.getElementById('resultRow');
+
+  const highlighted = text
+    .replace(/SELECT|FROM|WHERE/g, m => `<span class="kw">${m}</span>`)
+    .replace(/TRUE/g, m => `<span class="str">${m}</span>`);
+
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (prefersReduced) {
+    typedEl.innerHTML = highlighted.split(String.fromCharCode(10)).join('<br>');
+    resultRow.classList.add('show');
+  } else {
+    let i = 0;
+    const raw = text;
+    function typeChar() {
+      if (i <= raw.length) {
+        const slice = raw.slice(0, i);
+        const withTags = slice
+          .replace(/SELECT|FROM|WHERE/g, m => `<span class="kw">${m}</span>`)
+          .replace(/TRUE/g, m => `<span class="str">${m}</span>`)
+          .split(String.fromCharCode(10)).join('<br>');
+        typedEl.innerHTML = withTags;
+        i++;
+        setTimeout(typeChar, 28);
+      } else {
+        setTimeout(() => resultRow.classList.add('show'), 300);
+      }
+    }
+    typeChar();
+  }
+</script>
+
+</body>
+</html>
