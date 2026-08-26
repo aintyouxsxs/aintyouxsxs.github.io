@@ -111,8 +111,8 @@
     gap: 36px;
     margin-bottom: 20px;
   }
+  .hero-photo-col { flex-shrink: 0; display: flex; flex-direction: column; align-items: center; width: 150px; }
   .hero-photo {
-    flex-shrink: 0;
     width: 150px;
     height: 150px;
     border-radius: 50%;
@@ -144,6 +144,7 @@
 
   @media (max-width: 640px) {
     .hero-top { flex-direction: column; text-align: center; }
+    .hero-photo-col { width: auto; }
     .hero-photo { width: 120px; height: 120px; }
   }
 
@@ -280,6 +281,34 @@
   }
 
   /* ---------- SKILLS ---------- */
+  .stack-strip {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 32px;
+  }
+  .stack-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 7px 14px;
+    border-radius: 999px;
+    font-family: var(--mono);
+    font-size: 12.5px;
+    color: var(--text);
+    transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+  }
+  .stack-pill:hover {
+    border-color: var(--teal-dim);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.3);
+  }
+  .stack-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+  .stack-dot.teal { background: var(--teal); }
+  .stack-dot.amber { background: var(--amber); }
+
   .schema {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -556,9 +585,11 @@
   <div class="wrap">
     <div class="eyebrow">BSIT graduate, Cum Laude — data analyst track</div>
     <div class="hero-top">
-      <div class="hero-photo">
-        <img src="profile.jpg" alt="Mark Wilson R. Bunag">
-        <!-- Swap the div above for: <img src="profile.jpg" alt="Mark Wilson R. Bunag"> -->
+      <div class="hero-photo-col">
+        <div class="hero-photo">
+          <div class="placeholder">MB</div>
+          <!-- Swap the div above for: <img src="profile.jpg" alt="Mark Wilson R. Bunag"> -->
+        </div>
       </div>
       <div class="terminal">
         <div class="terminal-bar">
@@ -605,6 +636,18 @@
   <div class="wrap reveal">
     <div class="section-label">skills</div>
     <h2>DESCRIBE skills<span class="table-punct">;</span></h2>
+    <div class="stack-strip">
+      <span class="stack-pill"><span class="stack-dot teal"></span>Power BI</span>
+      <span class="stack-pill"><span class="stack-dot teal"></span>DAX</span>
+      <span class="stack-pill"><span class="stack-dot teal"></span>Excel</span>
+      <span class="stack-pill"><span class="stack-dot teal"></span>SQL Server</span>
+      <span class="stack-pill"><span class="stack-dot teal"></span>PostgreSQL</span>
+      <span class="stack-pill"><span class="stack-dot teal"></span>MySQL</span>
+      <span class="stack-pill"><span class="stack-dot amber"></span>Python</span>
+      <span class="stack-pill"><span class="stack-dot amber"></span>Pandas</span>
+      <span class="stack-pill"><span class="stack-dot amber"></span>JavaScript</span>
+      <span class="stack-pill"><span class="stack-dot amber"></span>AWS</span>
+    </div>
     <div class="schema">
       <div class="schema-table">
         <div class="schema-head">bi_and_analysis</div>
