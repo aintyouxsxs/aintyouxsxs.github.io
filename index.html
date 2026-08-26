@@ -2,6 +2,14 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<script>
+  (function() {
+    var saved = localStorage.getItem('theme');
+    var prefersLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
+    var theme = saved || (prefersLight ? 'light' : 'dark');
+    if (theme === 'light') document.documentElement.setAttribute('data-theme', 'light');
+  })();
+</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Mark Wilson Bunag — Data Analyst Portfolio</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -15,11 +23,27 @@
     --border: #232B3A;
     --text: #E6E8EB;
     --text-muted: #7C8698;
-    --teal: #E6E8EB;
-    --teal-dim: #4A5265;
+    --teal: #6E8CAE;
+    --teal-dim: #3D5470;
     --amber: #9AA3B4;
+    --grid-line: rgba(230,232,235,0.03);
+    --nav-bg: rgba(11,14,20,0.85);
     --mono: 'JetBrains Mono', monospace;
     --sans: 'Inter', sans-serif;
+  }
+
+  html[data-theme="light"] {
+    --bg: #F6F4EF;
+    --surface: #FFFFFF;
+    --surface-2: #EEEAE1;
+    --border: #DDD7C9;
+    --text: #1E2430;
+    --text-muted: #4B5361;
+    --teal: #3D5A7A;
+    --teal-dim: #A9B9CB;
+    --amber: #6B5B3F;
+    --grid-line: rgba(27,33,48,0.035);
+    --nav-bg: rgba(246,244,239,0.85);
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -32,10 +56,11 @@
     font-family: var(--sans);
     line-height: 1.6;
     background-image:
-      linear-gradient(rgba(230,232,235,0.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(230,232,235,0.03) 1px, transparent 1px);
+      linear-gradient(var(--grid-line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
     background-size: 48px 48px;
     background-attachment: fixed;
+    transition: background-color 0.3s ease, color 0.3s ease;
   }
 
   a { color: inherit; text-decoration: none; }
@@ -54,7 +79,7 @@
     top: 0;
     z-index: 50;
     backdrop-filter: blur(10px);
-    background: rgba(11,14,20,0.85);
+    background: var(--nav-bg);
     border-bottom: 1px solid var(--border);
   }
   nav .wrap {
@@ -91,6 +116,22 @@
   }
   .navlinks a:hover::after { transform: scaleX(1); }
   .navlinks a::before { content: "#"; color: var(--amber); margin-right: 3px; }
+
+  .theme-toggle {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text);
+    font-size: 15px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+  .theme-toggle:hover { border-color: var(--teal-dim); transform: translateY(-1px); }
 
   /* ---------- HERO / TERMINAL ---------- */
   header.hero {
@@ -236,16 +277,20 @@
   .reveal.in-view { opacity: 1; transform: none; }
   .section-label {
     font-family: var(--mono);
-    font-size: 13px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
     color: var(--amber);
-    margin-bottom: 10px;
+    margin-bottom: 12px;
   }
   .section-label::before { content: "-- "; color: var(--text-muted); }
   h2 {
     font-family: var(--mono);
-    font-size: 26px;
-    font-weight: 600;
-    margin-bottom: 28px;
+    font-size: 32px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    margin-bottom: 30px;
     color: var(--text);
   }
   h2 .table-punct { color: var(--teal); }
@@ -475,14 +520,18 @@
   }
   .stat-mini .num {
     font-family: var(--mono);
-    font-size: 20px;
+    font-size: 30px;
     font-weight: 700;
+    letter-spacing: -0.01em;
     color: var(--teal);
+    font-variant-numeric: tabular-nums;
   }
   .stat-mini .lbl {
     font-size: 11px;
+    font-weight: 500;
     color: var(--text-muted);
-    margin-top: 3px;
+    margin-top: 4px;
+    letter-spacing: 0.02em;
   }
 
   footer {
@@ -554,6 +603,9 @@
       <a href="#projects">projects</a>
       <a href="#contact">contact</a>
     </div>
+    <button id="themeToggle" class="theme-toggle" aria-label="Toggle light and dark mode" title="Toggle light/dark mode">
+      <span id="themeIcon">☾</span>
+    </button>
   </div>
 </nav>
 
@@ -563,7 +615,7 @@
     <div class="hero-top">
       <div class="hero-photo-col">
         <div class="hero-photo">
-          <img src="profile.jpg" alt="Mark Wilson R. Bunag">
+          <div class="placeholder">MB</div>
           <!-- Swap the div above for: <img src="profile.jpg" alt="Mark Wilson R. Bunag"> -->
         </div>
       </div>
@@ -883,6 +935,25 @@
   lightboxClose.addEventListener('click', closeLightbox);
   lightbox.addEventListener('click', (e) => { if (e.target === lightbox) closeLightbox(); });
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeLightbox(); });
+
+  const themeToggle = document.getElementById('themeToggle');
+  const themeIcon = document.getElementById('themeIcon');
+  function updateIcon() {
+    const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+    themeIcon.textContent = isLight ? '☀' : '☾';
+  }
+  updateIcon();
+  themeToggle.addEventListener('click', () => {
+    const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+    if (isLight) {
+      document.documentElement.removeAttribute('data-theme');
+      localStorage.setItem('theme', 'dark');
+    } else {
+      document.documentElement.setAttribute('data-theme', 'light');
+      localStorage.setItem('theme', 'light');
+    }
+    updateIcon();
+  });
 </script>
 
 </body>
